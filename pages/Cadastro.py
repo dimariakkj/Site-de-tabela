@@ -49,7 +49,7 @@ if finalizar:
 
 # Linha de totais
         totais = {
-        'produto': 'Total',
+        'Produto': 'Total',
         'semana 1': tabeladf['semana 1'].sum(skipna=True),
         'semana 2': tabeladf['semana 2'].sum(skipna=True),
         'semana 3': tabeladf['semana 3'].sum(skipna=True),
