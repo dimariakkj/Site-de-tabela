@@ -24,7 +24,7 @@ if file_upload:
     #aqui fica o primeiro grafico de preços
     with tab_preco:
         #o grafico é uma trasposiçao do dataframe criado de semanas por produtos que vira produtos por semana
-        grafico = df.set_index('produto')[['sem1', 'sem2', 'sem3', 'sem4']].T
+        grafico = df.set_index('produto')[['semana 1', 'semana 2', 'semana 3', 'semana 4']].T
         
         #aqui é criado o grafico onde se usa o plotly express para criar o grafico de linha
         fig = px.line(grafico,title="Grafico em relacao a o preco", labels={'index': 'semanas', 'value': 'Valor(R$)'})
