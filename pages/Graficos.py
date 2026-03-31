@@ -23,38 +23,25 @@ if file_upload:
    
     #aqui fica o primeiro grafico de preços
     with tab_preco:
-        #o grafico é uma trasposiçao do dataframe criado de semanas por produtos que vira produtos por semana
-        grafico = df.set_index('produto')[['semana 1', 'semana 2', 'semana 3', 'semana 4']].T
-        
-        #aqui é criado o grafico onde se usa o plotly express para criar o grafico de linha
-        fig = px.line(grafico,title="Grafico em relacao a o preco", labels={'index': 'semanas', 'value': 'Valor(R$)'})
-        
-        # aqui é como se faz para colocar o grafico no site
+        grafico = df[df['produto'] != 'Total'].set_index('produto')[['semana 1', 'semana 2', 'semana 3', 'semana 4']].T
+        fig = px.line(grafico, title="Grafico em relacao a o preco", labels={'index': 'semanas', 'value': 'Valor(R$)'})
         st.plotly_chart(fig, use_container_width=True)
+
 
     
     
     with tab_variacao:
         # a trasposiçao de variaçao por produto para produto por variaçao
-        grafico_var = df.set_index('produto')[['variacao1', 'variacao2']].T
-
-        fig_var = px.line(grafico_var,title='Grafico em relacao a variacao', labels={'index':'variacao', 'value': 'valor'})
-
-        fig_var.add_hline(
-            y=0,
-            line_dash='dash',
-            line_color='red'
-        )
-
+        grafico_var = df[df['produto'] != 'Total'].set_index('produto')[['variacao1', 'variacao2']].T
+        fig_var = px.line(grafico_var, title='Grafico em relacao a variacao', labels={'index':'variacao', 'value': 'valor'})
+        fig_var.add_hline(y=0, line_dash='dash', line_color='red')
         st.plotly_chart(fig_var, use_container_width=True)
-
-    
     
     with tab_salario:
     
     # Filtra a linha de totais do DataFrame e converte para Series
     # para permitir acesso direto pelos nomes das colunas
-        linha_total = df[df['produto'] == 'Total'].iloc[0]
+        linha_total = df[df['produto'] != 'Total'].iloc[0]
     
     # Cria um dicionário com os dados de salário organizados em duas colunas:
     # 'semana': identificador de cada período
