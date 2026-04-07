@@ -41,7 +41,7 @@ if file_upload:
     
     # Filtra a linha de totais do DataFrame e converte para Series
     # para permitir acesso direto pelos nomes das colunas
-        linha_total = df[df['Produto'] != 'Total'].iloc[0]
+        linha_total = df[df['Produto'] == 'Total'].iloc[0]
     
     # Cria um dicionário com os dados de salário organizados em duas colunas:
     # 'semana': identificador de cada período
@@ -64,7 +64,7 @@ if file_upload:
         base = linha_total['salario0']
     
     # Cria o gráfico de linha com semanas no eixo X e valores no eixo Y
-        fig_sal = px.line(salario_df, x='semana', y='valor', title='Evolução do Salário')
+        fig_sal = px.bar(salario_df, x='semana', y='valor', title='Evolução do Salário')
     
     # Adiciona linha horizontal tracejada vermelha no valor do salário base
     # para facilitar a visualização de quanto o salário subiu ou desceu
