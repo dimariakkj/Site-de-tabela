@@ -23,7 +23,7 @@ if file_upload:
     # aqui cria o lugar dos graficos
     exp1 = st.expander("graficos")
     # aqui e a onde cada um dos graficos vai ficar para organizar melhor o site
-    tab_variacao, tab_salario, tab_preco = exp1.tabs(["variacao", "salario", "preco"])
+    tab_variacao, tab_variacao_total, tab_salario, tab_preco= exp1.tabs(["variacao", "variacao total","salario", "preco"])
 
     # aqui fica o primeiro grafico de precos
     with tab_preco:
@@ -31,13 +31,30 @@ if file_upload:
         fig = px.line(grafico, title="Grafico em relacao a o preco", labels={'index': 'semanas', 'value': 'Valor(R$)'})
         st.plotly_chart(fig, use_container_width=True)
 
+    with tab_variacao_total:
+    # a transposicao de variacao total das semanas para usar no grafico
+        linha_total1 = df[df['Produto'] == 'Total'].iloc[0]
+
+    # cria um DataFrame com as duas variacoes totais para plotar
+        variacao_total = pd.DataFrame({
+        'variacao': ['variacao1', 'variacao2'],
+        'valor': [round(linha_total1['variacaot1'], 2), round(linha_total1['variacaot2'], 2)]  # arredonda para 2 casas decimais
+        })
+
+        fig_var = px.bar(variacao_total, x='variacao', y='valor',
+                     title='Variacao Total por Semana',
+                     labels={'variacao': 'Periodo', 'valor': 'Variacao (%)'})
+        fig_var.add_hline(y=0, line_dash='dash', line_color='red')
+        st.plotly_chart(fig_var, use_container_width=True)
+
     with tab_variacao:
-        # a transposicao de variacao por produto para produto por variacao
+    # a transposicao de variacao por produto para produto por variacao
         grafico_var = df[df['Produto'] != 'Total'].set_index('Produto')[['variacao1', 'variacao2']].T
+        grafico_var = grafico_var.round(2)  # arredonda para 2 casas decimais
         fig_var = px.line(grafico_var, title='Grafico em relacao a variacao', labels={'index':'variacao', 'value': 'valor'})
         fig_var.add_hline(y=0, line_dash='dash', line_color='red')
         st.plotly_chart(fig_var, use_container_width=True)
-    
+
     with tab_salario:
         # Filtra a linha de totais do DataFrame e converte para Series
         # para permitir acesso direto pelos nomes das colunas
